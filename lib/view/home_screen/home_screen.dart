@@ -31,92 +31,108 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.menu),
         actions: [
           Icon(Icons.square),
+          SizedBox(width: 5),
           Icon(Icons.grid_view_rounded),
-          Icon(Icons.list)
+          SizedBox(width: 5),
+          Icon(Icons.list),
+          SizedBox(width: 5),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Business",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              ),
-              Column(
-                  children: List.generate(
-                      homeProviderObj.newsApiResModel?.articles?.length ?? 0,
-                      (index) => InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DetailedScreen(
-                                          newsApiResModel:
-                                              homeProviderObj.newsApiResModel,
-                                          index: index)));
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  height: 100,
-                                  width: 150,
-                                  child: CachedNetworkImage(
-                                    imageUrl: homeProviderObj.newsApiResModel
-                                            ?.articles?[index].urlToImage
-                                            .toString() ??
-                                        "",
-                                    placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                  // child: Image.network(homeProviderObj
-                                  //         .newsApiResModel
-                                  //         ?.articles?[index]
-                                  //         .urlToImage ??
-                                  //     ""),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          child: Text(
-                                              homeProviderObj.newsApiResModel
-                                                      ?.articles?[index].title
-                                                      .toString() ??
-                                                  "",
-                                              maxLines: 3,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+      body: homeProviderObj.isLoading == true
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Business",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
+                    Column(
+                        children: List.generate(
+                            homeProviderObj.newsApiResModel?.articles?.length ??
+                                0,
+                            (index) => InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailedScreen(
+                                                    newsApiResModel:
+                                                        homeProviderObj
+                                                            .newsApiResModel,
+                                                    index: index)));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        height: 100,
+                                        width: 150,
+                                        child: CachedNetworkImage(
+                                          imageUrl: homeProviderObj
+                                                  .newsApiResModel
+                                                  ?.articles?[index]
+                                                  .urlToImage
+                                                  .toString() ??
+                                              "",
+                                          placeholder: (context, url) => Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
                                         ),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.35,
-                                          child: Text(
-                                              "By ${homeProviderObj.newsApiResModel?.articles?[index].author.toString()}"),
-                                        )
-                                      ]),
-                                )
-                              ],
-                            ),
-                          )))
-            ],
-          ),
-        ),
-      ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.5,
+                                                child: Text(
+                                                    homeProviderObj
+                                                            .newsApiResModel
+                                                            ?.articles?[index]
+                                                            .title
+                                                            .toString() ??
+                                                        "",
+                                                    maxLines: 3,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.35,
+                                                child: Text(
+                                                    "By ${homeProviderObj.newsApiResModel?.articles?[index].author.toString()}"),
+                                              )
+                                            ]),
+                                      )
+                                    ],
+                                  ),
+                                )))
+                  ],
+                ),
+              ),
+            ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "")
+      ], type: BottomNavigationBarType.fixed),
     );
   }
 }

@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:final_exam_news/model/news_api_resmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailedScreen extends StatelessWidget {
   const DetailedScreen(
@@ -13,7 +14,16 @@ class DetailedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Share.share(
+                    "Check out this latest news: ${newsApiResModel?.articles?[index].url}");
+              },
+              icon: Icon(Icons.share))
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
